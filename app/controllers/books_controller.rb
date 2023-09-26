@@ -2,22 +2,19 @@ class BooksController < ApplicationController
   before_action :ensure_correct_book, only: [:update, :edit ]
   def show
     @book = Book.find(params[:id])
-    @newbook = Book.new
     @user = current_user
-    @profile_user = @book.user
     @book_comment = BookComment.new
   end
 
   def index
-    @newbook = Book.new
     @books = Book.all
   end
 
   def create
-    @newbook = Book.new(book_params)
-    @newbook.user_id = current_user.id
-    if @newbook.save
-      redirect_to book_path(@newbook), notice: "You have created book successfully."
+    @book = Book.new(book_params)
+    @book.user_id = current_user.id
+    if @book.save
+      redirect_to book_path(@book), notice: "You have created book successfully."
     else
       @books = Book.all
       render 'index'
